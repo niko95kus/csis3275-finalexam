@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>Title</title>
+    <link rel="stylesheet" href="webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+
+    <style>
+        /*.pre-scrollable{*/
+        /*    height: 500px;*/
+        /*    overflow-y: scroll;*/
+        /*}*/
+
+        /*h1{*/
+        /*    text-align: center;*/
+        /*}*/
+
+        .greenbg{
+            background-color: #4aad4a;
+        }
+
+        h4 {
+            color:yellow;
+            text-align: center;
+        }
+
+        table{
+            border: 1px solid white;
+        }
+
+        .black {
+            background-color: black;
+            margin: 12em;
+        }
+
+        .white{
+            color:white;
+        }
+
+        .green{
+            color: #218321;
+        }
+    </style>
+
+    <script defer>
+        letter = ["A", "B", "C", "D", "E"];
+        seatMap = [
+            ["1A", "1B", "1C", "1D", "1E"],
+            ["2A", "2B", "2C", "2D", "2E"],
+            ["3A", "3B", "3C", "3D", "3E"],
+            ["4A", "4B", "4C", "4D", "4E"],
+        ];
+        // for(let row=1; row<=4; row++){
+        //     //seatMap[row] = new Array(letter.length);
+        //     seatMap[row] = [];
+        //
+        //     for(let col=0; col<letter.length; col++){
+        //         seatMap[row][col] = row + letter[col];
+        //     }
+        // }
+        //
+        // console.log(seatMap);
+
+        function check(){
+            let seatCode = document.getElementById("seatNo").value;
+            let name = document.getElementById("name").value;
+
+            if(seatCode == "" || name == ""){
+                alert("Seat or name cannot be blank");
+            }
+            else{
+                let valid = false;
+
+                for(let row=0; row<4; row++){
+                    for(let col=0; col<letter.length; col++){
+                        if(seatMap[row][col] == seatCode ){
+                            valid = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(valid){
+                    document.getElementById("booking").submit();
+                }
+                else{
+                    alert("Please follow the seat code format");
+                }
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+
+
+<div class="container greenbg mt-2 pre-scrollable" align="center">
+    <h3>Final Exam 3275 Software Engineering</h3>
+    <br><br><br>
+    <h4>Seat Reservation System</h4>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p,iter:${seats}">
+            <td th:text="${p.get(0)}"></td>
+            <td th:text="${p.get(1)}"></td>
+            <td th:text="${p.get(2)}"></td>
+            <td th:text="${p.get(3)}"></td>
+            <td th:text="${p.get(4)}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h4>There are [[ ${seatsLeft} ]] remaining seats</h4>
+    <form id="booking" method="post" th:action="@{book}">
+        <label>Seat Code:</label>
+        <input class="form-control" type="text" name="seatNo" id="seatNo"
+               th:value="${booking.seatNo}">
+        <span th:errors="${booking.seatNo}"></span>
+
+        <label>Customer Name:</label>
+        <input class="form-control" type="text" name="name" id="name"
+               th:value="${booking.name}">
+        <span th:errors="${booking.name}"></span>
+
+        <br>
+        <label>Transaction Date:</label>
+        <input class="form-control" type="date" name="date" id="date"
+               th:value="${booking.date}">
+        <span th:errors="${booking.date}"></span>
+
+
+    </form>
+    <button class="btn btn-primary" onclick="check()" >Reserve</button>
+
+    <br><br>
+
+    <div class="black">
+        <table>
+            <thead>
+                <tr>
+                    <th class="white">Transaction Code</th>
+                    <th class="white">Date</th>
+                    <th class="white">Seat Number</th>
+                    <th class="white">Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p:${bookings}">
+                    <td class="green" th:text="${p.getId()}"></td>
+                    <td class="green" th:text="${p.getDate()}"></td>
+                    <td class="green" th:text="${p.getSeatNo()}"></td>
+                    <td class="green" th:text="${p.getName()}"></td>
+                    <td>
+                        <a class="btn btn-danger" onclick="return confirm('Do you want to delete this data?')" th:href="@{delete(number=${p.getId()})}">Delete</a>
+                        <a class="btn btn-success" th:href="@{edit(number=${p.getId()})}">Edit</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+<script defer>
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    if(month < 10){
+        month = "0" + month;
+    }
+
+    let year = date.getFullYear();
+
+    // This arrangement can be altered based on how we want the date's format to appear.
+    let currentDate = `${year}-${month}-${day}`;
+    document.getElementById("date").value = currentDate;
+</script>
+</html>
