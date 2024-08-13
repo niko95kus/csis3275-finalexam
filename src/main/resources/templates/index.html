@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="webjars/bootstrap/5.1.3/css/bootstrap.min.css">
 
     <style>
-        /*.pre-scrollable{*/
-        /*    height: 500px;*/
-        /*    overflow-y: scroll;*/
-        /*}*/
+        .pre-scrollable{
+            height: 200px;
+            overflow-y: scroll;
+        }
 
         /*h1{*/
         /*    text-align: center;*/
@@ -24,13 +24,14 @@
             text-align: center;
         }
 
-        table{
+        .tableseat{
             border: 1px solid white;
         }
 
         .black {
-            background-color: black;
-            margin: 12em;
+            background-color: #3e2929;
+            padding-top: 2em;
+            padding-bottom: 2em;
         }
 
         .white{
@@ -38,7 +39,12 @@
         }
 
         .green{
-            color: #218321;
+            color: #87d990 !important;
+        }
+
+        th, td{
+            padding-left: 1.5em;
+            padding-right: 1.5em;
         }
     </style>
 
@@ -50,16 +56,6 @@
             ["3A", "3B", "3C", "3D", "3E"],
             ["4A", "4B", "4C", "4D", "4E"],
         ];
-        // for(let row=1; row<=4; row++){
-        //     //seatMap[row] = new Array(letter.length);
-        //     seatMap[row] = [];
-        //
-        //     for(let col=0; col<letter.length; col++){
-        //         seatMap[row][col] = row + letter[col];
-        //     }
-        // }
-        //
-        // console.log(seatMap);
 
         function check(){
             let seatCode = document.getElementById("seatNo").value;
@@ -95,77 +91,82 @@
 <body>
 
 
-<div class="container greenbg mt-2 pre-scrollable" align="center">
+<div class="container mt-2">
     <h3>Final Exam 3275 Software Engineering</h3>
-    <br><br><br>
-    <h4>Seat Reservation System</h4>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="p,iter:${seats}">
-            <td th:text="${p.get(0)}"></td>
-            <td th:text="${p.get(1)}"></td>
-            <td th:text="${p.get(2)}"></td>
-            <td th:text="${p.get(3)}"></td>
-            <td th:text="${p.get(4)}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="greenbg" align="center">
+        <div class="w-75">
+            <br><br>
+            <h4>Seat Reservation System</h4>
+            <br>
 
-    <h4>There are [[ ${seatsLeft} ]] remaining seats</h4>
-    <form id="booking" method="post" th:action="@{book}">
-        <label>Seat Code:</label>
-        <input class="form-control" type="text" name="seatNo" id="seatNo"
-               th:value="${booking.seatNo}">
-        <span th:errors="${booking.seatNo}"></span>
-
-        <label>Customer Name:</label>
-        <input class="form-control" type="text" name="name" id="name"
-               th:value="${booking.name}">
-        <span th:errors="${booking.name}"></span>
-
-        <br>
-        <label>Transaction Date:</label>
-        <input class="form-control" type="date" name="date" id="date"
-               th:value="${booking.date}">
-        <span th:errors="${booking.date}"></span>
-
-
-    </form>
-    <button class="btn btn-primary" onclick="check()" >Reserve</button>
-
-    <br><br>
-
-    <div class="black">
-        <table>
-            <thead>
+            <table class="table tableseat" style="color:white !important;">
+                <thead>
                 <tr>
-                    <th class="white">Transaction Code</th>
-                    <th class="white">Date</th>
-                    <th class="white">Seat Number</th>
-                    <th class="white">Name</th>
-                    <th></th>
-                    <th></th>
+                    <th class="text-center text-white">A</th><th class="text-center text-white">B</th><th class="text-center text-white">C</th><th class="text-center text-white">D</th><th class="text-center text-white">E</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr th:each="p:${bookings}">
-                    <td class="green" th:text="${p.getId()}"></td>
-                    <td class="green" th:text="${p.getDate()}"></td>
-                    <td class="green" th:text="${p.getSeatNo()}"></td>
-                    <td class="green" th:text="${p.getName()}"></td>
-                    <td>
-                        <a class="btn btn-danger" onclick="return confirm('Do you want to delete this data?')" th:href="@{delete(number=${p.getId()})}">Delete</a>
-                        <a class="btn btn-success" th:href="@{edit(number=${p.getId()})}">Edit</a>
-                    </td>
+                </thead>
+                <tbody>
+                <tr th:each="p,iter:${seats}">
+                    <td class="text-center text-white" th:text="${p.get(0)}"></td>
+                    <td class="text-center text-white" th:text="${p.get(1)}"></td>
+                    <td class="text-center text-white" th:text="${p.get(2)}"></td>
+                    <td class="text-center text-white" th:text="${p.get(3)}"></td>
+                    <td class="text-center text-white" th:text="${p.get(4)}"></td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+
+            <h4>There are [[ ${seatsLeft} ]] remaining seats</h4>
+            <form id="booking" method="post" th:action="@{book}">
+                <label class="text-white">Seat Code:</label>
+                <input class="" type="text" name="seatNo" id="seatNo"
+                       th:value="${booking.seatNo}">
+                <span th:errors="${booking.seatNo}"></span>
+
+                <label class="text-white">Customer Name:</label>
+                <input class="" type="text" name="name" id="name"
+                       th:value="${booking.name}">
+                <span th:errors="${booking.name}"></span>
+
+                <br>
+                <label class="text-white">Transaction Date:</label>
+                <input class="" type="date" name="date" id="date"
+                       th:value="${booking.date}">
+                <span th:errors="${booking.date}"></span>
+            </form>
+            <button class="btn btn-primary" onclick="check()" >Reserve</button>
+            <br><br><br>
+        </div>
+    </div>
+
+    <div class="black" align="center">
+        <div class="pre-scrollable w-75">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="white text-center">Transaction Code</th>
+                        <th class="white text-center">Date</th>
+                        <th class="white text-center">Seat Number</th>
+                        <th class="white text-center">Name</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p:${bookings}">
+                        <td class="green text-center" th:text="${p.getId()}"></td>
+                        <td class="green text-center" th:text="${p.getDate()}"></td>
+                        <td class="green text-center" th:text="${p.getSeatNo()}"></td>
+                        <td class="green text-center" th:text="${p.getName()}"></td>
+                        <td>
+                            <a class="btn btn-danger" onclick="return confirm('Do you want to delete this data?')" th:href="@{delete(number=${p.getId()})}">Delete</a>
+                            <a class="btn btn-success" th:href="@{edit(number=${p.getId()})}">Edit</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

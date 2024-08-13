@@ -19,11 +19,51 @@ JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             integrity="sha384-
 JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+
+    <script defer>
+        letter = ["A", "B", "C", "D", "E"];
+        seatMap = [
+            ["1A", "1B", "1C", "1D", "1E"],
+            ["2A", "2B", "2C", "2D", "2E"],
+            ["3A", "3B", "3C", "3D", "3E"],
+            ["4A", "4B", "4C", "4D", "4E"],
+        ];
+
+        function check(){
+            let seatCode = document.getElementById("seatNo").value;
+            let name = document.getElementById("name").value;
+
+            if(seatCode == "" || name == ""){
+                alert("Seat or name cannot be blank");
+            }
+            else{
+                let valid = false;
+
+                for(let row=0; row<4; row++){
+                    for(let col=0; col<letter.length; col++){
+                        if(seatMap[row][col] == seatCode ){
+                            valid = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(valid){
+                    document.getElementById("booking").submit();
+                }
+                else{
+                    alert("Please follow the seat code format");
+                }
+            }
+        }
+
+
+    </script>
 </head>
 <body>
 
 <div class="col-md-6 offset-3">
-    <form method="post" th:action="@{edit}">
+    <form id="booking" method="post" th:action="@{edit}">
         <div>
             <label>Transaction Number</label>
             <input class="form-control" type="text" name="id"
@@ -38,18 +78,20 @@ JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         </div>
         <div>
             <label>Seat Number</label>
-            <input class="form-control" type="text" name="seatNo"
+            <input class="form-control" type="text" name="seatNo" id="seatNo"
                    th:value="${booking.seatNo}">
             <span th:errors="${booking.seatNo}"></span>
         </div>
         <div>
             <label>Name</label>
-            <input class="form-control" type="text" name="name"
+            <input class="form-control" type="text" name="name" id="name"
                    th:value="${booking.name}">
             <span th:errors="${booking.name}"></span>
         </div>
-        <button type="submit" class="btn btn-primary" >Save</button>
+
     </form>
+<!--    <button type="submit" class="btn btn-primary" >Save</button>-->
+    <button class="btn btn-primary" onclick="check()" >Save</button>
 </div>
 </body>
 </html>
